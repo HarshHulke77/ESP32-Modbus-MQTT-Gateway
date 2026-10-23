@@ -15,3 +15,9 @@
 ## 2026-10-23 - Arduino IDE 2.x Serial Monitor froze (blank window)
 - Symptom: upload succeeded, then the IDE went blank and had to be killed in Task Manager.
 - Fix: close the IDE fully, use PuTTY (Serial, CP210x COM port, 115200) instead.
+
+## 2026-10-23 - Gateway TX and DE capture
+1 MHz, 5 M samples. D0 = TX (GPIO27), D1 = DE (GPIO4).
+DE high at about 100.2 ms, frame about 8.2 ms (expected 8.33 ms), DE low about 0.1 ms after the last bit.
+Image: images/2026-10-23-tx-de-capture.png
+Note: first capture used 20 kHz by mistake, so the frame was unreadable.
