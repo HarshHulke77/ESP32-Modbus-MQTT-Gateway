@@ -21,3 +21,5 @@
 DE high at about 100.2 ms, frame about 8.2 ms (expected 8.33 ms), DE low about 0.1 ms after the last bit.
 Image: images/2026-10-23-tx-de-capture.png
 Note: first capture used 20 kHz by mistake, so the frame was unreadable.
+
+the decoder showed 80 C0 00 00 00 80 21 50 until bit order was changed from msb-first to lsb-first. Same bytes, mirrored, so the wire was fine.
