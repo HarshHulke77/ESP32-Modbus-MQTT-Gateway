@@ -6,3 +6,5 @@
 - 2026-10-21 - Logic analyzer working (PulseView, fx2lafw, Zadig WinUSB on USB ID 0925 3881; fix was a different USB port). Idle-bus capture, 1 MHz, 5 s, CH1 on the junction row: flat high, no flicker, so no external bias resistors.
 - 2026-10-23 - Modbus CRC-16 verified on ESP32: request 01 03 00 00 00 01 gives 84 0A. Open: send the frame over UART2 with DE control (GPIO4, uart_wait_tx_done before DE low).
 2026-10-26 - P4 step 5 closed: poll gap 4.277 ms, request 8.3 ms, reply 7.3 ms, DE falls before reply. Timeout 100 -> 30 ms.
+
+2026-10-26 - P4 timeout 100 -> 30 ms. A-wire-pull retest passed (TIMEOUT, immediate recovery, no BAD FRAME). Garbage on serial not reproduced, cause unknown.
