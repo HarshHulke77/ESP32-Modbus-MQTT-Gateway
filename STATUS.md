@@ -7,4 +7,5 @@
 - 2026-10-23 - Modbus CRC-16 verified on ESP32: request 01 03 00 00 00 01 gives 84 0A. Open: send the frame over UART2 with DE control (GPIO4, uart_wait_tx_done before DE low).
 2026-10-26 - P4 step 5 closed: poll gap 4.277 ms, request 8.3 ms, reply 7.3 ms, DE falls before reply. Timeout 100 -> 30 ms.
 
-2026-10-26 - P4 timeout 100 -> 30 ms. A-wire-pull retest passed (TIMEOUT, immediate recovery, no BAD FRAME). Garbage on serial not reproduced, cause unknown.
+2026-10-26 - P4 timeout 100 -> 30 ms. A-wire-pull retest passed (TIMEOUT, immediate recovery, no BAD FRAME). Garbage on serial not reproduced, cause unknown. 
+2026-10-26 - P4 step 6 piece 1 closed: seq counter (RAM) verified. seq continues across TIMEOUT, resets to 1 on reboot. Flash-saved seq (every 10) comes with LittleFS.
