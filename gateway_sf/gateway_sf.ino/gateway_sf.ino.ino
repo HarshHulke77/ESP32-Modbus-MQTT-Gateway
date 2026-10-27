@@ -2,8 +2,8 @@
 #include <MQTT.h>
 #include <LittleFS.h>
 
-const char* WIFI_SSID = "WIFI_USERNAME";
-const char* WIFI_PASS = "YOUR_PASSWORD";
+const char* WIFI_SSID = "Harsh H";
+const char* WIFI_PASS = "harsh123";
 const char* BROKER_IP = "10.248.26.27";
 const char* TOPIC     = "gateway/p4/current";
 
@@ -14,13 +14,14 @@ const char* TOPIC     = "gateway/p4/current";
 const char* BUF_FILE = "/buffer.txt";
 const char* SEQ_FILE = "/seq.txt";
 const uint32_t SEQ_SAVE_EVERY = 10;
-const uint32_t MAX_BUF_BYTES  = 200000;   // stop buffering past this
+const uint32_t MAX_BUF_BYTES  = 200000;
 
 WiFiClient net;
 MQTTClient mqtt;
 uint32_t seq = 0;
 uint32_t lastSavedSeq = 0;
 uint32_t dropped = 0;
+uint32_t wifiDownSince = 0;
 
 const uint8_t REQ[8] = {0x01, 0x03, 0x00, 0x00, 0x00, 0x01, 0x84, 0x0A};
 
@@ -88,9 +89,16 @@ void flushBuffer() {
     String line = f.readStringUntil('\n');
     line.trim();
     if (line.length() == 0) continue;
-    if (!mqtt.publish(TOPIC, line, false, 1)) { ok = false; break; }
+    if (!mqtt.publish(TOPIC, line, false, 1)) {
+      Serial.printf("PUBLISH FAIL at line %d (%s), lastError=%d, returnCode=%d, wifi=%d\n",
+                    sent, line.c_str(), (int)mqtt.lastError(),
+                    (int)mqtt.returnCode(), (int)WiFi.status());
+      ok = false;
+      break;
+    }
     sent++;
     mqtt.loop();
+    delay(50);
   }
   f.close();
   if (ok) {
@@ -107,16 +115,27 @@ bool online() {
 
 void tryReconnect() {
   static uint32_t lastTry = 0;
-  if (millis() - lastTry < 5000) return;   // one attempt per 5 s, never blocks polling
+  if (millis() - lastTry < 5000) return;
   lastTry = millis();
+
   if (WiFi.status() != WL_CONNECTED) {
-    WiFi.begin(WIFI_SSID, WIFI_PASS);
+    if (wifiDownSince == 0) wifiDownSince = millis();
+    if (millis() - wifiDownSince > 30000) {
+      WiFi.disconnect();
+      WiFi.begin(WIFI_SSID, WIFI_PASS);
+      wifiDownSince = millis();
+    }
     return;
   }
+  wifiDownSince = 0;
+
   if (!mqtt.connected()) {
     if (mqtt.connect("p4-gateway")) {
       Serial.println("MQTT OK");
       flushBuffer();
+    } else {
+      Serial.printf("MQTT CONNECT FAIL lastError=%d returnCode=%d\n",
+                    (int)mqtt.lastError(), (int)mqtt.returnCode());
     }
   }
 }
@@ -129,13 +148,16 @@ void setup() {
 
   if (!LittleFS.begin(true)) Serial.println("LittleFS FAILED");
   uint32_t saved = loadSeq();
-  seq = (saved == 0) ? 0 : saved + SEQ_SAVE_EVERY;   // skip up to 10, never duplicate
+  seq = (saved == 0) ? 0 : saved + SEQ_SAVE_EVERY;
   lastSavedSeq = seq;
   Serial.printf("BOOT seq starts after %lu\n", (unsigned long)seq);
 
   WiFi.mode(WIFI_STA);
+  WiFi.setSleep(false);
+  WiFi.setAutoReconnect(true);
   WiFi.begin(WIFI_SSID, WIFI_PASS);
   mqtt.begin(BROKER_IP, net);
+  mqtt.setOptions(30, true, 5000);
 }
 
 void loop() {
