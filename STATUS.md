@@ -9,3 +9,5 @@
 
 2026-10-26 - P4 timeout 100 -> 30 ms. A-wire-pull retest passed (TIMEOUT, immediate recovery, no BAD FRAME). Garbage on serial not reproduced, cause unknown. 
 2026-10-26 - P4 step 6 piece 1 closed: seq counter (RAM) verified. seq continues across TIMEOUT, resets to 1 on reboot. Flash-saved seq (every 10) comes with LittleFS.
+2026-10-27 - P4 step 6 piece 2 closed: WiFi + MQTT QoS 1 happy path. PUBACK on every publish, m6-m20 consecutive, ~1.1 s interval. Broker: Mosquitto installed fresh, listener 1883, p4.conf.
+2026-10-27 - P4 step 6 piece 3 closed: store-and-forward verified (seq 88-94 buffered, FLUSHED 7, dropped=0). Power cycle: BOOT after 450, first seq 451, no duplicates. Zero point shifted to about -70 mA after power source change.
