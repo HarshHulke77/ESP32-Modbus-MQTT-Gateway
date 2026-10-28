@@ -2,8 +2,8 @@
 #include <MQTT.h>
 #include <LittleFS.h>
 
-const char* WIFI_SSID = "Harsh H";
-const char* WIFI_PASS = "harsh123";
+const char* WIFI_SSID = "USERNAME";
+const char* WIFI_PASS = "YOUR_PASSWORD";
 const char* BROKER_IP = "10.248.26.27";
 const char* TOPIC     = "gateway/p4/current";
 
@@ -15,7 +15,7 @@ const char* BUF_FILE = "/buffer.txt";
 const char* SEQ_FILE = "/seq.txt";
 const uint32_t SEQ_SAVE_EVERY = 10;
 const uint32_t MAX_BUF_BYTES  = 200000;
-
+ 
 WiFiClient net;
 MQTTClient mqtt;
 uint32_t seq = 0;
