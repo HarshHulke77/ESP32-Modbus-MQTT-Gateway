@@ -2,7 +2,7 @@
 #include <MQTT.h>
 #include <LittleFS.h>
 
-const char* WIFI_SSID = "Username";
+const char* WIFI_SSID = "YOUR_USERNAME";
 const char* WIFI_PASS = "YOUR_PASSWORD";
 const char* BROKER_IP = "10.248.26.27";
 const char* TOPIC     = "gateway/p4/current";
