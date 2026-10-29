@@ -11,6 +11,7 @@
 2026-10-26 - P4 step 6 piece 1 closed: seq counter (RAM) verified. seq continues across TIMEOUT, resets to 1 on reboot. Flash-saved seq (every 10) comes with LittleFS.
 2026-10-27 - P4 step 6 piece 2 closed: WiFi + MQTT QoS 1 happy path. PUBACK on every publish, m6-m20 consecutive, ~1.1 s interval. Broker: Mosquitto installed fresh, listener 1883, p4.conf.
 2026-10-27 - P4 step 6 piece 3 closed: store-and-forward verified (seq 88-94 buffered, FLUSHED 7, dropped=0). Power cycle: BOOT after 450, first seq 451, no duplicates. Zero point shifted to about -70 mA after power source change.
-2026-10-28 - P4 step 7 closed. Power cut with broker down: buffered through ~seq 6260, recovered, SENT resumed at 6316, dropped=0. BOOT line and main FLUSHED N not read, so buffer survival is indicated but not confirmed from the log. Garbage chars before SENT 6322, cause unknown.
-2026-10-28 - P4 README rewritten, full version. Open: divider values, commit gateway_sf2 with placeholders, bug journal
-
+2026-10-28 - P4 step 7 closed. WiFi off 10 min: S=3787, buffered 3788-4314, FLUSHED 527, dropped=0, first seq 4315. RS-485 30 s pull: 28 TIMEOUT, 0 BAD FRAME, by eye. Power cut while buffering: recovered, SENT resumed at 6316, count/BOOT line not read (buffer survival indicated but unconfirmed). Garbage chars before SENT 6322, cause unknown.
+2026-10-28 - P4 README rewritten (full version) and pushed. Bug journal entries 003-007 written and committed. Hotspot password rotated after the old one was found in public commit 0db07a2.
+2026-10-28 - Discussion: Li-ion 3S pack and buck converter (not needed for bench gateway, relevant for PCB); village trip from 2026-11-01; JLCPCB order plan under consideration; Nucleo arrived; startup code and linker script introduced in discussion, to be taught from scratch next time.
+2026-10-28 - Open: PCB order decision (due 2026-10-29), commit gateway_sf2 with placeholders, P4 resume bullet, divider values, seconds-to-flush, disconnected: count, garbage characters, lastError=-9, zero-point shift.
